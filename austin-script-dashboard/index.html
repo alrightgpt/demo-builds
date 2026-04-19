@@ -16,8 +16,8 @@
 
   <div class="page-shell">
     <nav class="topbar">
-      <div>
-        <p class="eyebrow">Voilà-styled mobile build</p>
+      <div class="topbar-brand-block">
+        <p class="eyebrow topbar-eyebrow">Voilà-styled mobile build</p>
         <a class="brand" href="#top">Austin Script Dashboard</a>
       </div>
       <div class="topbar-actions">
@@ -311,7 +311,9 @@
     });
 
     const toggleHeroOverlays = () => {
-      document.body.classList.toggle('hide-hero-overlays', window.scrollY > 140);
+      const isScrolled = window.scrollY > 140;
+      document.body.classList.toggle('hide-hero-overlays', isScrolled);
+      document.body.classList.toggle('hide-topbar-eyebrow', isScrolled);
     };
 
     window.addEventListener('scroll', toggleHeroOverlays, { passive: true });
