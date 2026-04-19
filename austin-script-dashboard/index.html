@@ -309,6 +309,13 @@
         panels.forEach((panel) => panel.classList.toggle('active', panel.id === target));
       });
     });
+
+    const toggleHeroOverlays = () => {
+      document.body.classList.toggle('hide-hero-overlays', window.scrollY > 140);
+    };
+
+    window.addEventListener('scroll', toggleHeroOverlays, { passive: true });
+    toggleHeroOverlays();
   </script>
 </body>
 </html>

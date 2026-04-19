@@ -294,6 +294,13 @@ button { font: inherit; }
   max-width: 260px;
   padding: 18px;
   border-radius: 20px;
+  transition: opacity .24s ease, transform .24s ease;
+}
+
+body.hide-hero-overlays .floating-note {
+  opacity: 0;
+  transform: translateY(-12px);
+  pointer-events: none;
 }
 
 .floating-note-a { left: -10px; bottom: 70px; }
