@@ -99,9 +99,10 @@
     .bar-count { width: 30px; font-size: 0.75rem; }
     table { font-size: 0.75rem; }
     th, td { padding: 8px 6px; }
-    .truncate { max-width: 80px; }
     .badge { padding: 1px 6px; font-size: 0.6rem; }
-    table { display: block; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+    .permit-badge { padding: 3px 8px; font-size: 0.7rem; }
+    #permits-table { font-size: 0.8rem; }
+    #permits-table th, #permits-table td { padding: 10px 8px; }
     details summary { padding: 12px 14px; font-size: 0.9rem; }
     details > div { padding: 0 14px 14px; }
     ul { margin: 10px 0 14px 16px; }
@@ -314,64 +315,82 @@
   <div class="section">
     <h2><span class="dot purple"></span> Commercial Permit Highlights</h2>
     <p style="margin-bottom:16px; font-size:0.85rem; color:#4a5568;">
-      Portland Maps commercial intakes with roofing-related work. Direct re-roof jobs + new construction that needs roofing.
+      Portland Maps commercial intakes with roofing-related work. <strong>Tap the Work Type badge</strong> to see full description.
     </p>
-    <table>
+    <table id="permits-table">
       <thead>
-        <tr><th>Valuation</th><th>Address</th><th>Work Type</th><th>Description</th></tr>
+        <tr><th>Valuation</th><th>Address</th><th>Work Type (tap for details)</th></tr>
       </thead>
       <tbody>
         <tr>
           <td><strong>$44.4M</strong></td>
           <td>12000 SW 49th Ave</td>
-          <td><span class="badge purple">Renovation</span></td>
-          <td class="truncate">Renovate building including exterior envelope, replace roof</td>
+          <td><span class="badge purple permit-badge" data-desc="Renovate building including exterior envelope, replace roof, windows, and structural repairs">Renovation</span></td>
         </tr>
         <tr>
           <td><strong>$25.0M</strong></td>
           <td>240 SE Grand Ave</td>
-          <td><span class="badge purple">New Construction</span></td>
-          <td class="truncate">Flatworks &mdash; 8-story, 143-unit affordable housing</td>
+          <td><span class="badge purple permit-badge" data-desc="Flatworks — 8-story, 143-unit affordable housing building with ground floor parking">New Construction</span></td>
         </tr>
         <tr>
           <td><strong>$10.3M</strong></td>
           <td>3326 SE 89th Ave</td>
-          <td><span class="badge purple">New Construction</span></td>
-          <td class="truncate">Alyssa Daye Gardens &mdash; 4-story, 31-unit affordable housing</td>
+          <td><span class="badge purple permit-badge" data-desc="Alyssa Daye Gardens — 4-story, 31-unit affordable housing building">New Construction</span></td>
         </tr>
         <tr>
           <td><strong>$625K</strong></td>
           <td>7805 SE Oaks Park Way</td>
-          <td><span class="badge purple">New Construction</span></td>
-          <td class="truncate">Oaks Park amusement rides & infrastructure</td>
+          <td><span class="badge purple permit-badge" data-desc="Oaks Park amusement rides & infrastructure — includes site and utility work">New Construction</span></td>
         </tr>
         <tr>
           <td><strong>$550K</strong></td>
           <td>12000 SW 49th Ave</td>
-          <td><span class="badge orange">Addition</span></td>
-          <td class="truncate">PCC canopy entrance installation</td>
+          <td><span class="badge orange permit-badge" data-desc="PCC canopy entrance installation — new covered entryway">Addition</span></td>
         </tr>
         <tr>
           <td><strong>$23.4K</strong></td>
           <td>9606 N Berkeley Ave</td>
-          <td><span class="badge blue">Re-Roof</span></td>
-          <td class="truncate">Tear off and replace shingles, sheathing, underlayment</td>
+          <td><span class="badge blue permit-badge" data-desc="Tear off and replace 1 layer of shingles, replace portions of sheathing, install roof runner underlayment">Re-Roof</span></td>
         </tr>
         <tr>
           <td><strong>$20.0K</strong></td>
           <td>9606 N Berkeley Ave</td>
-          <td><span class="badge blue">Re-Roof</span></td>
-          <td class="truncate">Companion re-roof permit (same building)</td>
+          <td><span class="badge blue permit-badge" data-desc="Companion re-roof permit — tear off and replace shingles on same building">Re-Roof</span></td>
         </tr>
         <tr>
           <td><strong>$10.0K</strong></td>
           <td>1028 SE 12th Ave</td>
-          <td><span class="badge blue">Repair</span></td>
-          <td class="truncate">Repair two water-damaged roof beams</td>
+          <td><span class="badge blue permit-badge" data-desc="Repair two water-damaged roof beams — structural repair after water intrusion">Repair</span></td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <!-- Popup Modal -->
+  <div id="desc-popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; justify-content:center; align-items:center; padding:20px;">
+    <div style="background:#fff; border-radius:12px; padding:24px; max-width:400px; width:100%; box-shadow:0 10px 40px rgba(0,0,0,0.3); position:relative;">
+      <button onclick="closePopup()" style="position:absolute; top:12px; right:12px; background:none; border:none; font-size:1.5rem; cursor:pointer; color:#718096;">&times;</button>
+      <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.5px; color:#805ad5; font-weight:700; margin-bottom:8px;">Project Description</div>
+      <p id="popup-text" style="font-size:1rem; color:#2d3748; line-height:1.5; margin:0;"></p>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.permit-badge').forEach(badge => {
+      badge.style.cursor = 'pointer';
+      badge.addEventListener('click', function() {
+        const desc = this.getAttribute('data-desc');
+        document.getElementById('popup-text').textContent = desc;
+        document.getElementById('desc-popup').style.display = 'flex';
+      });
+    });
+    function closePopup() {
+      document.getElementById('desc-popup').style.display = 'none';
+    }
+    document.getElementById('desc-popup').addEventListener('click', function(e) {
+      if (e.target === this) closePopup();
+    });
+  </script>
 
   <!-- Files -->
   <div class="section">
